@@ -1,0 +1,262 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | BIBLUNE</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <header class="site-header">
+        <div class="container nav-wrap">
+
+            <a class="brand" href="index.html">
+                <img src="Images/logo3.jpeg"
+                    alt="BIBLUNE Logo"
+                    class="brand-logo">
+                BIBLUNE
+            </a>
+
+            <nav>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="Books.html">Books</a></li>
+                    <li><a href="Categories.html">Categories</a></li>
+                    <li><a href="About.html">Our Story</a></li>
+                </ul>
+            </nav>
+
+            <div class="nav-actions">
+                <button class="icon-btn"
+                        data-open-cart
+                        aria-label="Open shopping cart">
+                    ♧
+                    <span class="cart-count" data-cart-count>0</span>
+                </button>
+
+                <button class="menu-toggle"
+                        id="menuToggle"
+                        aria-expanded="false">
+                    ☰
+                </button>
+            </div>
+
+        </div>
+    </header>
+
+
+    <main class="section">
+
+        <div class="container">
+
+            <div class="checkout-heading">
+                <p class="eyebrow">Almost yours</p>
+                <h1 class="page-title">Complete your order.</h1>
+                <p>Enter your information and review your order.</p>
+            </div>
+
+
+            <div class="checkout-layout">
+
+                <!-- Customer Information -->
+
+                <section class="form-wrap checkout-form-wrap">
+
+                    <h2>Customer Information</h2>
+
+                    <form id="checkoutForm">
+
+                        <div class="form-grid">
+
+                            <div class="field">
+                                <label for="customerName">Full Name</label>
+                                <input type="text"
+                                       id="customerName"
+                                       name="customerName"
+                                       autocomplete="name"
+                                       required>
+                            </div>
+
+                            <div class="field">
+                                <label for="customerPhone">Phone Number</label>
+                                <input type="tel"
+                                       id="customerPhone"
+                                       name="customerPhone"
+                                       autocomplete="tel"
+                                       required>
+                            </div>
+
+                            <div class="field full">
+                                <label for="customerEmail">Email Address</label>
+                                <input type="email"
+                                       id="customerEmail"
+                                       name="customerEmail"
+                                       autocomplete="email"
+                                       required>
+                            </div>
+
+                            <div class="field full">
+                                <label for="customerAddress">City</label>
+                                <select id="customerAddress" name="customerAddress" required>
+                                    <option value="">Select your city</option>
+                                    <option value="d">Dhaka</option>
+                                    <option value="rs">Rajshahi</option>
+                                    <option value="rn">Rongpur</option>
+                                    <option value="ks">Kishoregonj</option>
+                                    <option value="kh">Khulna</option>
+                                    <option value="b">Barishal</option>
+                                    <option value="ch">Chittagong</option>
+                                    <option value="cm">Cumilla</option>
+                                    <option value="g">Gazipur</option>
+                                    <option value="n">Narsingdi</option>
+                                    <option value="kt">Kustia</option>
+                                    <option value="f">Faridpur</option>
+                                </select>
+                            </div>
+
+                            <div class="field full">
+                                <label for="orderNote">Order Note (Optional)</label>
+                                <textarea id="orderNote"
+                                          name="orderNote"
+                                          placeholder="Any delivery instructions?"></textarea>
+                            </div>
+
+                        </div>
+
+                        <p class="checkout-demo-note">
+                            Demo checkout only. No information will be sent
+                            to a server and no payment will be collected.
+                        </p>
+
+                        <button type="submit"
+                                class="btn btn-primary checkout-submit"
+                                id="placeOrderBtn">
+                            Place Demo Order →
+                        </button>
+
+                    </form>
+
+                </section>
+
+
+                <!-- Order Summary -->
+
+                <aside class="checkout-summary">
+
+                    <h2>Order Summary</h2>
+
+                    <div id="checkoutSummaryItems"
+                         class="checkout-summary-items">
+                    </div>
+
+                    <div class="checkout-totals">
+
+                        <div class="summary-line">
+                            <span>Subtotal</span>
+                            <strong id="checkoutSubtotal">৳0</strong>
+                        </div>
+
+                        <div class="summary-line">
+                            <span>Discount</span>
+                            <strong id="checkoutDiscount">৳0</strong>
+                        </div>
+
+                        <div class="summary-line">
+                            <span>Delivery Charge</span>
+                            <strong id="checkoutDelivery">৳0</strong>
+                        </div>
+
+                        <div class="summary-line summary-grand">
+                            <span>Grand Total</span>
+                            <strong id="checkoutGrandTotal">৳0</strong>
+                        </div>
+
+                    </div>
+
+                    <a href="Books.html"
+                       class="btn btn-light continue-shopping">
+                        ← Continue Shopping
+                    </a>
+
+                </aside>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- Cart Overlay -->
+
+    <div class="cart-overlay"
+         id="cartOverlay"
+         role="dialog"
+         aria-modal="true"
+         aria-label="Shopping bag">
+
+        <div class="cart-panel">
+
+            <div class="cart-head">
+                <h2>Your book bag</h2>
+
+                <button class="icon-btn" data-close-cart>
+                    ×
+                </button>
+            </div>
+
+            <div class="cart-items" id="cartItems"></div>
+
+            <div class="cart-total">
+
+                <div class="summary-line">
+                    <span>Subtotal</span>
+                    <strong id="cartSubtotal">৳0</strong>
+                </div>
+
+                <div class="summary-line">
+                    <span>Discount</span>
+                    <strong id="cartDiscount">৳0</strong>
+                </div>
+
+                <div class="summary-line">
+                    <span>Delivery Charge</span>
+                    <strong id="cartDelivery">৳0</strong>
+                </div>
+
+                <div class="summary-line summary-grand">
+                    <span>Grand Total</span>
+                    <strong id="cartGrandTotal">৳0</strong>
+                </div>
+
+                <a href="Books.html"
+                   class="btn btn-light continue-shopping">
+                    ← Continue Shopping
+                </a>
+
+                <button class="btn btn-primary"
+                        id="checkoutBtn"
+                        style="width:100%">
+                    Proceed to Checkout →
+                </button>
+
+                <p class="cart-note">
+                    Demo storefront · No payment will be collected
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script defer src="script.js"></script>
+
+</body>
+</html>

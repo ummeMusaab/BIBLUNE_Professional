@@ -100,9 +100,36 @@ const BOOKS = [
 },
 {
     id: 12,
+    title: "Tulonamulok Dhormo",
+    author: "Dr. Md. Belal Hossen",
+    price: 400,
+    image: "Images/Tulonamulok-Dhormo.jpg",
+    category: "Islamic Knowledge & Spirituality",
+    tag: "Bestseller"
+},
+{
+    id: 13,
+    title: "Islahi Khutubat",
+    author: "Mufti Taqi Usmani",
+    price: 800,
+    image: "Images/Islahi Khutubat.png",
+    category: "Islamic Knowledge & Spirituality",
+    tag: "Inspiring"
+},
+{
+    id: 14,
+    title: "Shamrajjer trash",
+    author: "Michael Scheuer",
+    price: 350,
+    image: "Images/Shamrajjer trash.jpeg",
+    category: "Islamic Literature & Inspirational Stories",
+    tag: "Heartwarming"
+},
+{
+    id: 15,
     title: "KalNagini",
     author: "Enayetullah Altamash",
-    price: 400,
+    price: 300,
     image: "Images/KalNagini-250x350.jpg",
     category: "Historical Fiction & Adventure",
     tag: "Adventure"
@@ -170,27 +197,194 @@ function addToCart ( id) {
     saveCart ( cart);
     showToast ( "Added to your book bag");
 }
-function updateCartUI () {
-    const cart = getCart ();
-    const count = cart.reduce ( ( n, x) => n + x.qty, 0);
-    document.querySelectorAll ( "[data-cart-count]").forEach ( el => el.textContent = count);
-    const items = document.querySelector ( "#cartItems");
-    if ( ! items) return;
-    const valid = cart.map ( x => ( {
-        ...x, book: BOOKS.find ( b => b.id === x.id)
+// Delivery and discount settings
+const DELIVERY_CHARGE = 60;
+const DISCOUNT_AMOUNT = 0;
+
+
+// Calculate cart totals
+function calculateCartTotals(cart) {
+
+    const valid = cart.map(item => ({
+        ...item,
+        book: BOOKS.find(book => book.id === item.id)
+    })).filter(item => item.book);
+
+    const subtotal = valid.reduce(
+        (sum, item) => sum + item.qty * item.book.price, 0
+    );
+
+    const discount = Math.min(DISCOUNT_AMOUNT, subtotal);
+
+    const delivery = valid.length > 0 ? DELIVERY_CHARGE : 0;
+
+    const grandTotal = subtotal - discount + delivery;
+
+    return {
+        valid,
+        subtotal,
+        discount,
+        delivery,
+        grandTotal
+    };
+}
+
+
+// Update cart interface
+function updateCartUI() {
+
+    const cart = getCart();
+
+    const count = cart.reduce(
+        (total, item) => total + item.qty, 0
+    );
+
+    document.querySelectorAll("[data-cart-count]").forEach(el => {
+        el.textContent = count;
+    });
+
+    const items = document.querySelector("#cartItems");
+
+    const totals = calculateCartTotals(cart);
+
+    if (items) {
+
+        if (!totals.valid.length) {
+
+            items.innerHTML = `
+                <div class="empty-state">
+                    <strong>Your book bag is waiting</strong>
+                    Add a book you would love to read.
+                </div>
+            `;
+
+        } else {
+
+            items.innerHTML = totals.valid.map(item => `
+                <div class="cart-item">
+
+                    <img src="${item.book.image}"
+                         alt="${item.book.title}">
+
+                    <div>
+                        <h3>${item.book.title}</h3>
+
+                        <p>${money(item.book.price)} each</p>
+
+                        <div class="qty-control">
+
+                            <button data-qty="${item.id}"
+                                    data-change="-1">−</button>
+
+                            <span>${item.qty}</span>
+
+                            <button data-qty="${item.id}"
+                                    data-change="1">+</button>
+
+                        </div>
+                    </div>
+
+                    <button class="remove-item"
+                            data-remove="${item.id}">
+                        Remove
+                    </button>
+
+                </div>
+            `).join("");
+
+        }
     }
-    )).filter ( x => x.book);
-    if ( ! valid.length) {
-        items.innerHTML = '<div class="empty-state"><strong>Your book bag is waiting</strong>Add a book you would love to read.</div>'
+
+    // Display order summary
+    const summary = {
+        cartSubtotal: totals.subtotal,
+        cartDiscount: totals.discount,
+        cartDelivery: totals.delivery,
+        cartGrandTotal: totals.grandTotal
+    };
+
+    Object.entries(summary).forEach(([id, value]) => {
+
+        const element = document.getElementById(id);
+
+        if (element) {
+            element.textContent = money(value);
+        }
+
+    });
+
+    const checkout = document.querySelector("#checkoutBtn");
+
+    if (checkout) {
+        checkout.disabled = !totals.valid.length;
     }
-    else {
-        items.innerHTML = valid.map ( x => `<div class="cart-item"><img src="${x.book.image}" alt=""><div><h3>${x.book.title}</h3><p>${money(x.book.price)} each</p><div class="qty-control"><button data-qty="${x.id}" data-change="-1" aria-label="Decrease quantity">−</button><span>${x.qty}</span><button data-qty="${x.id}" data-change="1" aria-label="Increase quantity">+</button></div></div><button class="remove-item" data-remove="${x.id}">Remove</button></div>`).join ( "")
+}
+function renderCheckoutSummary() {
+
+    const container = document.querySelector("#checkoutSummaryItems");
+
+    if (!container) return;
+
+    const totals = calculateCartTotals(getCart());
+
+    if (!totals.valid.length) {
+
+        container.innerHTML = `
+            <p class="checkout-empty">
+                Your cart is empty.
+                <a href="Books.html">Browse books</a>
+            </p>
+        `;
+
+    } else {
+
+        container.innerHTML = totals.valid.map(item => `
+            <div class="checkout-product">
+
+                <img src="${item.book.image}"
+                     alt="${item.book.title}">
+
+                <div class="checkout-product-info">
+
+                    <strong>${item.book.title}</strong>
+
+                    <span>
+                        ${item.qty} × ${money(item.book.price)}
+                    </span>
+
+                </div>
+
+                <strong>
+                    ${money(item.qty * item.book.price)}
+                </strong>
+
+            </div>
+        `).join("");
+
     }
-    const total = valid.reduce ( ( n, x) => n + x.qty * x.book.price, 0);
-    const totalEl = document.querySelector ( "#cartTotal");
-    if ( totalEl) totalEl.textContent = money ( total);
-    const checkout = document.querySelector ( "#checkoutBtn");
-    if ( checkout) checkout.disabled = ! valid.length;
+
+    const summary = {
+        checkoutSubtotal: totals.subtotal,
+        checkoutDiscount: totals.discount,
+        checkoutDelivery: totals.delivery,
+        checkoutGrandTotal: totals.grandTotal
+    };
+
+    Object.entries(summary).forEach(([id, value]) => {
+
+        const element = document.getElementById(id);
+
+        if (element) {
+            element.textContent = money(value);
+        }
+
+    });
+
+    const placeOrder = document.querySelector("#placeOrderBtn");
+
+    if (placeOrder) {
+        placeOrder.disabled = !totals.valid.length;
+    }
 }
 function showToast ( message) {
     const toast = document.querySelector ( "#toast");
@@ -278,11 +472,47 @@ document.addEventListener ( "click", e => {
     if ( remove) saveCart ( getCart ().filter ( x => x.id !== Number ( remove.dataset.remove)));
 }
 );
-document.querySelector ( "#checkoutBtn")?.addEventListener ( "click", () => showToast ( "Demo checkout: connect a secure backend to accept orders."));
-document.addEventListener ( "DOMContentLoaded", () => {
-    initNav ();
-    updateCartUI ();
-    initCatalog ();
-    initForms ();
-}
-);
+// Open checkout page
+document.querySelector("#checkoutBtn")?.addEventListener("click", () => {
+
+    if (getCart().length === 0) {
+        showToast("Your cart is empty.");
+        return;
+    }
+
+    window.location.href = "checkout.html";
+
+});
+// Checkout form submission
+document.querySelector("#checkoutForm")?.addEventListener("submit", e => {
+
+    e.preventDefault();
+
+    const form = e.target;
+
+    if (!form.reportValidity()) return;
+
+    if (getCart().length === 0) {
+        showToast("Your cart is empty.");
+        return;
+    }
+
+    showToast("Thank you! Your demo order is complete.");
+
+    localStorage.removeItem("bibluneCart");
+
+    updateCartUI();
+
+    renderCheckoutSummary();
+
+    form.reset();
+
+});
+// Initialize website functions
+document.addEventListener("DOMContentLoaded", () => {
+    initNav();
+    updateCartUI();
+    initCatalog();
+    initForms();
+    renderCheckoutSummary();
+});

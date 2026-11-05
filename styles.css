@@ -674,7 +674,7 @@ button,a {
     color:#e7c69c
 }
 .page-title {
-    color:white;
+    color:#613654;
     margin-bottom:14px
 }
 .page-hero p:last-child {
@@ -1161,3 +1161,153 @@ button,a {
         animation:none!important
     }
 }
+
+/* Cart Order Summary */
+
+.summary-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+    color: var(--muted);
+    font-size: .88rem;
+    margin: 9px 0;
+}
+
+.summary-line strong {
+    color: var(--plum);
+}
+
+.summary-grand {
+    border-top: 1px solid var(--line);
+    padding-top: 13px;
+    margin-top: 13px;
+    color: var(--plum);
+    font-size: 1.05rem;
+    font-weight: 800;
+}
+
+.summary-grand strong {
+    font-size: 1.15rem;
+}
+
+.continue-shopping {
+    width: 100%;
+    margin: 7px 0 10px;
+    text-decoration: none;
+}
+
+/* Checkout Page */
+
+.checkout-heading {
+    text-align: center;
+    margin: 0 auto 34px;
+    max-width: 680px;
+}
+
+.checkout-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(280px, .85fr);
+    gap: 28px;
+    align-items: start;
+}
+
+.checkout-form-wrap {
+    max-width: none;
+    margin: 0;
+}
+
+.checkout-form-wrap h2,
+.checkout-summary h2 {
+    color: var(--plum);
+    font: 600 1.55rem "Playfair Display", Georgia, serif;
+    margin: 0 0 22px;
+}
+
+.checkout-summary {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    padding: 26px;
+    box-shadow: var(--shadow);
+}
+
+.checkout-summary-items {
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 12px;
+}
+
+.checkout-product {
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr) auto;
+    gap: 12px;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.checkout-product img {
+    width: 48px;
+    height: 62px;
+    object-fit: contain;
+    border-radius: 6px;
+    background: #f0e7df;
+}
+
+.checkout-product-info {
+    display: grid;
+    gap: 4px;
+    min-width: 0;
+}
+
+.checkout-product-info strong {
+    color: var(--plum);
+    font-size: .86rem;
+}
+
+.checkout-product-info span {
+    color: var(--muted);
+    font-size: .78rem;
+}
+
+.checkout-product > strong {
+    color: var(--plum);
+    font-size: .82rem;
+}
+
+.checkout-totals {
+    padding: 12px 0 5px;
+}
+
+.checkout-demo-note {
+    color: var(--muted);
+    font-size: .8rem;
+    line-height: 1.6;
+    margin: 20px 0 12px;
+}
+
+.checkout-submit {
+    width: 100%;
+}
+
+.checkout-empty {
+    color: var(--muted);
+    font-size: .9rem;
+}
+
+.checkout-empty a {
+    color: var(--plum);
+    font-weight: 700;
+}
+
+@media (max-width: 760px) {
+
+    .checkout-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .checkout-summary {
+        order: -1;
+    }
+
+}
+

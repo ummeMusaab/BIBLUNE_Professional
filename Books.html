@@ -228,21 +228,40 @@
     <div class="cart-items" id="cartItems">
     </div>
     <div class="cart-total">
-     <div class="total-line">
-      <span>
-       Subtotal
-      </span>
-      <span id="cartTotal">
-       ৳0
-      </span>
-     </div>
-     <button class="btn btn-primary" id="checkoutBtn" style="width:100%">
-      Continue to checkout →
-     </button>
-     <p class="cart-note">
-      Demo storefront · No payment will be collected
-     </p>
+
+    <div class="summary-line">
+        <span>Subtotal</span>
+        <strong id="cartSubtotal">৳0</strong>
     </div>
+
+    <div class="summary-line">
+        <span>Discount</span>
+        <strong id="cartDiscount">৳0</strong>
+    </div>
+
+    <div class="summary-line">
+        <span>Delivery Charge</span>
+        <strong id="cartDelivery">৳0</strong>
+    </div>
+
+    <div class="summary-line summary-grand">
+        <span>Grand Total</span>
+        <strong id="cartGrandTotal">৳0</strong>
+    </div>
+
+    <a href="Books.html" class="btn btn-light continue-shopping">
+        ← Continue Shopping
+    </a>
+
+    <button class="btn btn-primary" id="checkoutBtn" style="width:100%">
+        Proceed to Checkout →
+    </button>
+
+    <p class="cart-note">
+        Demo storefront · No payment will be collected
+    </p>
+
+</div>
    </div>
   </div>
   <div aria-live="polite" class="toast" id="toast" role="status">
